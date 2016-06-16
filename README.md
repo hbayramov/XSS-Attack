@@ -1,6 +1,16 @@
 # XSS-Attack
 Cross-Site Scripting Attack
 
+#### Setup
+
+We are going to work on a publicly available open-source vulnerable web applica-
+tion: OWASP Mutillidae 2. This application contains various web vulnerabilities
+including XSS attack.  It is based on PHP and MySQL and part of the OWASP
+(Open Web Application Security Project). You need to download OWASP Virtual
+Machine to obtain OWASP Mutillidae 2. The virtual machine can be downloaded
+from [here](https://sourceforge.net/projects/owaspbwa/files/1.2/) and OWASP Mutillidae 2 can be run from any browser in Windows, Mac
+or Linux
+
 #### Alice adds to her blog an entry that contains a JavaScript code that shows
 their cookies to the users who visit her blog
 Here we added simple JavaScript code to print cookie of user who have just entered to see blog
