@@ -1,3 +1,4 @@
+<script>
 
 listCookies();
 
@@ -12,3 +13,5 @@ function listCookies() {
 	}	
 	console.Log(aString); 
 }
+
+</script>
